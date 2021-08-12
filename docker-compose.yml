@@ -11,7 +11,7 @@ services:
     container_name: dj_broker
     image: rabbitmq:latest
     ports:
-      - "5672:5672"
+      - "5673:5673"
   dj_worker:
     container_name: dj_worker
     build: .
@@ -23,7 +23,10 @@ services:
   django_boilerplate:
     container_name: django_boilerplate
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
